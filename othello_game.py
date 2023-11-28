@@ -1,20 +1,17 @@
 
 class OthelloGame:
-    def __init__(self):
-        self.board = OthelloBoard()
-        self.players = [OthelloPlayer(Players.BLACK), OthelloPlayer(Players.WHITE)]
-        self.turn = 0
-        self.game_over = False
-
-    def play(self):
-        while not self.game_over:
-            self.board.print_board()
-            self.player.get_move(self.board)
-            self.board.print_board()
-            self.computer.get_move(self.board)
-            self.turn += 1
-            if self.turn == 60:
-                self.game_over = True
-        self.board.print_board()
-        print("Game Over")
-        self.board.print_score()
+    def __init__(self, othello_board, players): # (players as input could be two AI/ two humans/ one AI one human)
+        self.board = othello_board
+        self.players = players
+        self.num_players = len(players)
+        self.current_player_index = 0
+    
+    def get_board(self):
+        return self.board
+    
+    def next_turn(self):
+        self.current_player_index = (self.current_player_index + 1) % self.num_players
+        return self.get_current_player()
+    
+    def get_current_player(self):
+        return self.players[self.current_player_index]

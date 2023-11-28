@@ -1,50 +1,43 @@
 import pygame
 import sys
 from othello_board import OthelloBoard
+from othello_player import OthelloPlayer
+from othello_game import OthelloGame    
+import colors
 
-# Initialize Pygame
-pygame.init()
-
-# Constants
 WIDTH, HEIGHT = 600, 600
-GRID_SIZE = 8
-CELL_SIZE = WIDTH // GRID_SIZE
+CELL_SIZE = WIDTH // 8
 
-# Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Pygame Grid")
+    clock = pygame.time.Clock()
 
-# Create the Pygame window
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Pygame Grid")
+    board = OthelloBoard()
+    players = [OthelloPlayer(colors.BLACK), OthelloPlayer(colors.WHITE)]
+    game = OthelloGame(board, players)
+    
+    current_player = game.get_current_player()
+    board.draw_board(screen, WIDTH, CELL_SIZE)
 
-board = OthelloBoard()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                col = mouse_x //  CELL_SIZE
+                row = mouse_y //  CELL_SIZE
+                print(current_player.is_flanking(board, col, row))
+                board.draw_piece(screen, col, row, current_player.color, CELL_SIZE)
+                current_player = game.next_turn()
 
-board.draw_board(screen, WIDTH/8, HEIGHT/8)
+        pygame.display.flip()
+        clock.tick(60)
 
-# Main game loop
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            print("Mouse button down")
-            # Get the mouse position
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+    pygame.quit()
 
-            # Check which cell was clicked
-            clicked_col = mouse_x //  (WIDTH//8)
-            clicked_row = mouse_y //  (WIDTH//8)
-
-            # Draw a piece on the clicked cell
-            board.draw_piece(screen, clicked_col, clicked_row, (0, 0, 0),  WIDTH//8)
-
-
-    # Draw the grid
-
-    # Update the display
-    pygame.display.flip()
-
-    # Set the frames per second
-    pygame.time.Clock().tick(60)
+if __name__ == "__main__":
+    main()
