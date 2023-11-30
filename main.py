@@ -15,7 +15,7 @@ def main():
     clock = pygame.time.Clock()
 
     board = OthelloBoard()
-    players = [OthelloPlayer(colors.BLACK), OthelloPlayer(colors.WHITE)]
+    players = [OthelloPlayer(colors.BLACK, 1), OthelloPlayer(colors.WHITE, -1)]
     game = OthelloGame(board, players)
     
     current_player = game.get_current_player()
@@ -27,12 +27,14 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                col = mouse_x //  CELL_SIZE
-                row = mouse_y //  CELL_SIZE
-                print(current_player.is_flanking(board, col, row))
-                board.draw_piece(screen, col, row, current_player.color, CELL_SIZE)
-                current_player = game.next_turn()
+                if  event.button == 1:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    col = mouse_x //  CELL_SIZE
+                    row = mouse_y //  CELL_SIZE
+                    if current_player.make_move(board, row, col):
+                        board.draw_piece(screen, col, row, current_player.color, current_player.value, CELL_SIZE)
+                        current_player = game.next_turn()
+                        board.draw_board(screen, WIDTH, CELL_SIZE)
 
         pygame.display.flip()
         clock.tick(60)

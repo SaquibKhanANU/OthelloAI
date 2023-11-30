@@ -32,13 +32,13 @@ class OthelloBoard:
                     pygame.draw.rect(screen, colors.OTHELLO_GREEN, (x, y, CELL_SIZE, CELL_SIZE))
                     pygame.draw.rect(screen, colors.BLACK, (x, y, CELL_SIZE, CELL_SIZE), 2)
                 elif self.board[row][col] == 1:
-                    self.draw_piece(screen, col, row, colors.BLACK, CELL_SIZE)
+                    self.draw_piece(screen, col, row, colors.BLACK, 1, CELL_SIZE)
                 elif self.board[row][col] == -1:
-                    self.draw_piece(screen, col, row, colors.WHITE, CELL_SIZE)
+                    self.draw_piece(screen, col, row, colors.WHITE, -1, CELL_SIZE)
 
-    def draw_piece(self, screen, col, row, color, CELL_SIZE):
+    def draw_piece(self, screen, col, row, color, value, CELL_SIZE):
         x, y = col * CELL_SIZE,row * CELL_SIZE
-        self.board[row][col] = color
+        self.board[row][col] = value
         pygame.draw.rect(screen, colors.OTHELLO_GREEN, (x, y, CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(screen, colors.BLACK, (x, y, CELL_SIZE, CELL_SIZE), 2)
         pygame.draw.circle(screen, color, (x + CELL_SIZE // 2, y + CELL_SIZE // 2), CELL_SIZE // 2 - 5)
