@@ -15,3 +15,8 @@ class OthelloGame:
     
     def get_current_player(self):
         return self.players[self.current_player_index]
+    
+    def check_game_over(self):
+        return self.players[0].is_terminal_node(self.board)
+
+    
